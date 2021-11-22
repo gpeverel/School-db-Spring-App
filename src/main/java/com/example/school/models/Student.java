@@ -2,23 +2,21 @@ package com.example.school.models;
 
 
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Data
-@Table(name = "Student")
+@Table(name = "student")
 public class Student
 {
 
 	@Id
-	@Column(name = "id")
+	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
-//	@Column(name = "class_number", nullable = false)
-//	private String classNumber;
 
 	@Column(name = "date_of_birth", nullable = false)
 	private LocalDate dateOfBirth;
@@ -27,6 +25,6 @@ public class Student
 	private String fullName;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "group_number")
+	@JoinColumn(name = "class_id")
 	private Group group;
 }
