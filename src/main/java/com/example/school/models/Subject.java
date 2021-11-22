@@ -1,14 +1,20 @@
 package com.example.school.models;
 
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+//@AllArgsConstructor
+//@ToString
+@RequiredArgsConstructor
 @Table(name = "subject")
 public class Subject
 {
@@ -24,7 +30,29 @@ public class Subject
 	@Column(name = "number_of_years_to_study", nullable = false)
 	private int NumberOfYears;
 
+	@JsonBackReference
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "schedule_id", nullable = false)
-	private Schedule scheduleId;
+	private Schedule schedule;
+
+//	@Override
+//	public boolean equals(Object o)
+//	{
+//		if (this == o) return true;
+//		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+//		Subject subject = (Subject) o;
+//		return id != null && Objects.equals(id, subject.id);
+//	}
+//
+	@Override
+	public int hashCode()
+	{
+		return getClass().hashCode();
+	}
+
+	public Subject(String title)
+	{
+		this.title = title;
+	}
 }

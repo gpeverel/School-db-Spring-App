@@ -18,10 +18,14 @@ public class SchoolController
 	SchoolService schoolService;
 
 
-	@GetMapping("/schedule/")
-	public Set<Schedule> schedule(@RequestParam String name) {
+	@GetMapping("/schedule/teacher")
+	public Schedule scheduleByTeacher(
+			@RequestParam String name) {
 		return schoolService.findByTeachersName(name);
 	}
 
-
+	@GetMapping("/schedule/class")
+	public Schedule scheduleByClass(@RequestParam int number) {
+		return schoolService.findByClassNumber(number);
+	}
 }

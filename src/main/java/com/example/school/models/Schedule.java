@@ -1,30 +1,65 @@
 package com.example.school.models;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @RequiredArgsConstructor
-@Data
+@Getter
+@Setter
+//@ToString
 @Table(name = "schedule")
 public class Schedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long scheduleId;
+	@Column(name = "schedule_id")
+	@JsonIgnore
+	private Long id;
 
-	@OneToMany(mappedBy = "scheduleId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
+	@OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	//@Fetch(FetchMode.SELECT)
+	@ToString.Exclude
 	private Set<Group> groups;
 
-	@OneToMany(mappedBy = "scheduleId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<Cabinet> cabinetList;
+	@JsonManagedReference
+	@OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ToString.Exclude
+//	@Fetch(FetchMode.SELECT)
+	private Set<Cabinet> cabinets;
 
-	@OneToMany(mappedBy = "scheduleId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
+	@OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ToString.Exclude
+	//	@Fetch(FetchMode.SELECT)
 	private Set<Teacher> teachers;
 
-	@OneToMany(mappedBy = "scheduleId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
+	@OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ToString.Exclude
+	//@Fetch(FetchMode.SELECT)
 	private Set<Subject> subjects;
+
+//	@Override
+//	public boolean equals(Object o)
+//	{
+//		if (this == o) return true;
+//		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+//		Schedule schedule = (Schedule) o;
+//		return schedule != null && Objects.equals(schedule, schedule.schedule);
+//	}
+//
+//	@Override
+//	public int hashCode()
+//	{
+//		return getClass().hashCode();
+//	}
 }

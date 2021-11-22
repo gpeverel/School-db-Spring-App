@@ -1,14 +1,21 @@
 package com.example.school.models;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Data
+@Getter
+@Setter
+//@ToString
+@RequiredArgsConstructor
 @Table(name = "class")
 public class Group
 {
@@ -16,19 +23,38 @@ public class Group
 	@Id
 	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int classId;
+	@Column(name = "class_id")
+	private int id;
 
 	@Column(name = "number", unique = true, nullable = false, length = 10)// обязательное, незануляемое поле, размер 10
 	private String  number;
 
-
 	@Column(name = "number_of_students", nullable = false)
 	private int numberOfStudents;
 
-	@OneToMany(mappedBy = "group", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JsonManagedReference
+	@ToString.Exclude
+	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	Set<Student> students;
 
+	@JsonBackReference
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "schedule_id", nullable = false)
-	private Schedule scheduleId;
+	private Schedule schedule;
+
+//	@Override
+//	public boolean equals(Object o)
+//	{
+//		if (this == o) return true;
+//		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+//		Group group = (Group) o;
+//		return classId != null && Objects.equals(classId, group.classId);
+//	}
+//
+//	@Override
+//	public int hashCode()
+//	{
+//		return getClass().hashCode();
+//	}
 }
