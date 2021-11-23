@@ -20,12 +20,14 @@ public class SchoolController
 
 	@GetMapping("/schedule/teacher")
 	public Schedule scheduleByTeacher(
-			@RequestParam String name) {
+			@RequestParam String name
+	) {
 		return schoolService.findByTeachersName(name);
 	}
 
 	@GetMapping("/schedule/class")
-	public Schedule scheduleByClass(@RequestParam int number) {
-		return schoolService.findByClassNumber(number);
+	public Schedule scheduleByClass(@RequestParam String number) {
+
+		return schoolService.findByClassNumber(number).get();
 	}
 }

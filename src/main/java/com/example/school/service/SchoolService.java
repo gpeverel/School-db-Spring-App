@@ -1,22 +1,23 @@
 package com.example.school.service;
 
 
+import com.example.school.models.Group;
 import com.example.school.models.Schedule;
 import com.example.school.models.Teacher;
+import com.example.school.repository.ClassRepository;
 import com.example.school.repository.ScheduleRepository;
 import com.example.school.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Set;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class SchoolService {
 	private final ScheduleRepository schoolRepo;
 	private final TeacherRepository teacherRepo;
+	private final ClassRepository   classRepo;
 
 	public Schedule findByTeachersName(String name) {
 
@@ -33,7 +34,9 @@ public class SchoolService {
 
 	}
 
-	public Schedule findByClassNumber(int number) {
-		return schoolRepo.findAllByGroups(number);
+	public Optional<Schedule> findByClassNumber(String number)
+	{
+		Group group = classRepo.findByNumber(number);
+		return schoolRepo.findById(group.getSchedule().getId());
 	}
 }
